@@ -3,4 +3,15 @@
 
     <string name="empty_bike_list_text">Bike list is empty.\nPlease add your bike to start track there components.</string>
     <string name="add_new_bike_text">Add new bike</string>
+
+    <string name="brand_field_label">Brand</string>
+    <string name="model_field_label">Model</string>
+    <string name="obtaining_date_field_label">Obtaining Date</string>
+    <string name="description_field_label">Description</string>
+    <string name="add_bike_text">Add bike</string>
+
+    <string name="picker_text_input_year_abbr" description="A 1 character abbreviation for year. It will be part of a string such as dd/mm/yyyy or mm/dd/yyyy or y.mm.dd. [CHAR_LIMIT=2]">y</string>
+    <string name="picker_text_input_month_abbr" description="A 1 character abbreviation for month. It will be part of a string such as dd/mm/yyyy or mm/dd/yyyy or y.mm.dd. [CHAR_LIMIT=2]">m</string>
+    <string name="picker_text_input_day_abbr" description="A 1 character abbreviation for day. It will be part of a string such as dd/mm/yyyy or mm/dd/yyyy or y.mm.dd. [CHAR_LIMIT=2]">d</string>
+
 </resources>

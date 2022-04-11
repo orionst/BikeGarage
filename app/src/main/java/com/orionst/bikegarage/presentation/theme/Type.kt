@@ -1,4 +1,4 @@
-package com.orionst.bikegarage.ui.theme
+package com.orionst.bikegarage.presentation.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

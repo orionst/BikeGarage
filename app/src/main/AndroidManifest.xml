@@ -11,8 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BikeGarage">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
+            android:screenOrientation="fullSensor"
             android:theme="@style/Theme.BikeGarage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

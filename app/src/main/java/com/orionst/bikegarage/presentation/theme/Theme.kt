@@ -1,4 +1,4 @@
-package com.orionst.bikegarage.ui.theme
+package com.orionst.bikegarage.presentation.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
