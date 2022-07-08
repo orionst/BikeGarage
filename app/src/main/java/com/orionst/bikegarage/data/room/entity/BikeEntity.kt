@@ -6,11 +6,10 @@ import java.util.*
 
 @Entity(tableName = "bikes")
 data class BikeEntity(
+    @PrimaryKey(autoGenerate = true)
+    val uid: Int = 0,
     val brandName: String,
     val modelName: String,
     val creationDate: Date?,
     val description: String
-) {
-    @PrimaryKey(autoGenerate = true)
-    var uid: Int = 0
-}
+)

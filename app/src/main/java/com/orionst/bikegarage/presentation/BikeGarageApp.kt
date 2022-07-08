@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.orionst.bikegarage.presentation.screens.addbike.AddBikeScreen
+import com.orionst.bikegarage.presentation.screens.bikedetails.BikeDetailsScreen
 import com.orionst.bikegarage.presentation.screens.bikelist.BikeListScreen
 
 @Composable
@@ -22,7 +23,8 @@ fun BikeGarageApp(
     ) {
         composable(Screen.BikeList.route) { backStackEntry: NavBackStackEntry ->
             BikeListScreen(
-                onAddBikeClick = { actions.addBikePress(backStackEntry) }
+                onAddBikeClick = { actions.addBikePress(backStackEntry) },
+                onBikeClick = { actions.onBikeClick(backStackEntry, it) }
             )
         }
         composable(Screen.AddBike.route) { backStackEntry: NavBackStackEntry ->
@@ -30,8 +32,11 @@ fun BikeGarageApp(
                 upPress = { actions.upPress(backStackEntry) }
             )
         }
-        composable(Screen.BikeDetails.route) {
-
+        composable(Screen.BikeDetails.route) { backStackEntry: NavBackStackEntry ->
+            BikeDetailsScreen(
+                bikeId = backStackEntry.arguments?.getString(ScreenDeeplink.BIKE_ID).orEmpty(),
+                upPress = { actions.upPress(backStackEntry) },
+            )
         }
     }
 }
@@ -55,6 +60,12 @@ class MainActions(navController: NavHostController) {
         // In order to discard duplicated navigation events, we check the Lifecycle
         if (from.lifecycleIsResumed()) {
             navController.navigate(Screen.AddBike.route)
+        }
+    }
+
+    val onBikeClick: (from: NavBackStackEntry, bikeId: Int) -> Unit = { from, bikeId ->
+        if (from.lifecycleIsResumed()) {
+            navController.navigate(Screen.BikeDetails.createRoute(bikeId = bikeId))
         }
     }
 }

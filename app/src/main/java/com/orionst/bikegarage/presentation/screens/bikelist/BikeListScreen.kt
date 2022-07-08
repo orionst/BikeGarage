@@ -3,6 +3,7 @@ package com.orionst.bikegarage.presentation.screens.bikelist
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -30,6 +31,7 @@ import com.orionst.bikegarage.presentation.theme.BikeGarageTheme
 @Composable
 fun BikeListScreen(
     onAddBikeClick: () -> Unit,
+    onBikeClick: (Int) -> Unit,
     viewModel: BikeListViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -56,7 +58,10 @@ fun BikeListScreen(
                 )
             }
             is BikeListScreenState.Garage -> {
-                BikeList(bikes = (uiState as BikeListScreenState.Garage).bikes)
+                BikeList(
+                    bikes = (uiState as BikeListScreenState.Garage).bikes,
+                    onClick = onBikeClick,
+                )
             }
         }
     }
@@ -95,7 +100,10 @@ private fun WelcomeContent(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun BikeList(bikes: List<BikeUi>) {
+private fun BikeList(
+    bikes: List<BikeUi>,
+    onClick: (Int) -> Unit,
+) {
     LazyColumn(
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -105,7 +113,9 @@ private fun BikeList(bikes: List<BikeUi>) {
             key = { bike -> bike.uid }
         ) {
             BikeItem(
-                modifier = Modifier.animateItemPlacement(),
+                modifier = Modifier
+                    .animateItemPlacement()
+                    .clickable { onClick(it.uid) },
                 bike = it
             )
         }
@@ -163,7 +173,7 @@ private fun BikeListPreview(
     @PreviewParameter(BikesUiProvider::class) bikes: List<BikeUi>
 ) {
     BikeGarageTheme {
-        BikeList(bikes)
+        BikeList(bikes) {}
     }
 }
 
