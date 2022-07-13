@@ -6,6 +6,9 @@ sealed class Screen(val route: String) {
     object BikeDetails : Screen("bikedetails/{${ScreenDeeplink.BIKE_ID}}") {
         fun createRoute(bikeId: Int) = "bikedetails/$bikeId"
     }
+    object AddBikeComponent: Screen("bikecomponents/{${ScreenDeeplink.BIKE_ID}}") {
+        fun createRoute(bikeId: Int) = "bikecomponents/$bikeId"
+    }
 }
 
 object ScreenDeeplink {

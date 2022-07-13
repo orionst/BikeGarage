@@ -8,4 +8,5 @@ interface BikeRepository {
     val allBikes: Flow<List<Bike>>
 
     suspend fun insert(bike: BikeToSave)
+    suspend fun getBike(bikeId: Int): Bike
 }

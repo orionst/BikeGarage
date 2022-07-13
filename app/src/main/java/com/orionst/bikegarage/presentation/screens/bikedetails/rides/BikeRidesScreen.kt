@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun BikeRidesScreen(bikeId: String) {
+fun BikeRidesScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()

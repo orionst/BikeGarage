@@ -5,7 +5,7 @@ import com.orionst.bikegarage.presentation.entity.BikeUi
 
 fun List<Bike>.toUiModel(): List<BikeUi> = map { it.toUiModel() }
 
-private fun Bike.toUiModel() = BikeUi(
+fun Bike.toUiModel() = BikeUi(
     uid = uid,
     brandName = brandName,
     modelName = modelName,

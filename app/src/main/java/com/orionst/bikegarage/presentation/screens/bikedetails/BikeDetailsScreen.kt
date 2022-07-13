@@ -8,11 +8,14 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.*
 import com.orionst.bikegarage.R
 import com.orionst.bikegarage.presentation.screens.bikedetails.components.BikeComponentsScreen
@@ -22,19 +25,21 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun BikeDetailsScreen(
-    bikeId: String,
-    upPress: () -> Unit,
+    viewModel: BikeDetailsViewModel = hiltViewModel(),
+    upPress: () -> Unit
 ) {
     val tabs = listOf(
-        BikeDetailsTabItem.Components(bikeId),
-        BikeDetailsTabItem.Rides(bikeId),
+        BikeDetailsTabItem.Components,
+        BikeDetailsTabItem.Rides,
     )
+    val uiState by viewModel.uiState.collectAsState()
     val pagerState = rememberPagerState()
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(stringResource(id = R.string.bike_details_title, bikeId))
+                    val bikeText = "${uiState?.brandName.orEmpty()} ${uiState?.modelName.orEmpty()}"
+                    Text(stringResource(id = R.string.bike_details_title, bikeText.trim()))
                 },
                 navigationIcon = {
                     IconButton(onClick = upPress) {
@@ -94,16 +99,16 @@ sealed class BikeDetailsTabItem(
     @StringRes val title: Int,
     val screen: @Composable () -> Unit,
 ) {
-    class Components(bikeId: String) : BikeDetailsTabItem(
+    object Components : BikeDetailsTabItem(
         icon = R.drawable.ic_cog,
         title = R.string.tab_item_components,
-        screen = { BikeComponentsScreen(bikeId) }
+        screen = { BikeComponentsScreen() }
     )
 
-    class Rides(bikeId: String) : BikeDetailsTabItem(
+    object Rides : BikeDetailsTabItem(
         icon = R.drawable.ic_bike,
         title = R.string.tab_item_rides,
-        screen = { BikeRidesScreen(bikeId) }
+        screen = { BikeRidesScreen() }
     )
 }
 
@@ -115,8 +120,8 @@ sealed class BikeDetailsTabItem(
 fun TabsPreview() {
     MaterialTheme {
         val tabs = listOf(
-            BikeDetailsTabItem.Components("1"),
-            BikeDetailsTabItem.Rides("1"),
+            BikeDetailsTabItem.Components,
+            BikeDetailsTabItem.Rides,
         )
         val pagerState = rememberPagerState()
 
@@ -131,8 +136,8 @@ fun TabsPreview() {
 fun TabsContentPreview() {
     MaterialTheme {
         val tabs = listOf(
-            BikeDetailsTabItem.Components("1"),
-            BikeDetailsTabItem.Rides("1"),
+            BikeDetailsTabItem.Components,
+            BikeDetailsTabItem.Rides,
         )
         val pagerState = rememberPagerState()
         TabsContent(tabs = tabs, pagerState = pagerState)
@@ -145,6 +150,6 @@ fun TabsContentPreview() {
 @Composable
 fun MainScreenPreview() {
     MaterialTheme {
-        BikeDetailsScreen("") {}
+        BikeDetailsScreen {}
     }
 }

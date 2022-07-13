@@ -6,7 +6,7 @@ import com.orionst.bikegarage.domain.entity.BikeToSave
 
 fun List<BikeEntity>.toBikeList(): List<Bike> = map { it.toBike() }
 
-private fun BikeEntity.toBike() = Bike(
+fun BikeEntity.toBike() = Bike(
     uid = uid,
     brandName = brandName,
     modelName = modelName,
