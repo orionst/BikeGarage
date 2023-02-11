@@ -29,4 +29,9 @@ class BikeRepositoryImpl @Inject constructor(
     override suspend fun getBike(bikeId: Int) =
         bikeDao.getBikeById(bikeId).first()
             .toBike()
+
+    @WorkerThread
+    override suspend fun deleteBike(bikeId: Int) {
+        bikeDao.findAndDelete(bikeId)
+    }
 }

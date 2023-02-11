@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">BikeGarage</string>
 
+    <string name="empty_bike_list_backlayer_text">Bike list is empty.</string>
     <string name="empty_bike_list_text">Bike list is empty.\nPlease add your bike to start track there components.</string>
     <string name="add_new_bike_text">Add new bike</string>
 
@@ -17,5 +18,6 @@
 
     <string name="tab_item_components">Components</string>
     <string name="tab_item_rides">Rides</string>
-
+    <string name="fab_components_text">Add Component</string>
+    <string name="fab_rides_text">Add Ride</string>
 </resources>

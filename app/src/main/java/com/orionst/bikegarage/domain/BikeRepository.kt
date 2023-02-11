@@ -9,4 +9,5 @@ interface BikeRepository {
 
     suspend fun insert(bike: BikeToSave)
     suspend fun getBike(bikeId: Int): Bike
+    suspend fun deleteBike(bikeId: Int)
 }

@@ -6,4 +6,7 @@ data class BikeUi(
     val modelName: String,
 //    val creationDate: Date?,
     val description: String
-)
+) {
+    val fullName: String
+        get() = "$brandName $modelName"
+}

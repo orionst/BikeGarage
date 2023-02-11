@@ -10,8 +10,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.orionst.bikegarage.presentation.screens.addbike.AddBikeScreen
-import com.orionst.bikegarage.presentation.screens.bikedetails.BikeDetailsScreen
-import com.orionst.bikegarage.presentation.screens.bikelist.BikeListScreen
+import com.orionst.bikegarage.presentation.screens.addcomponent.AddEditComponentScreen
+import com.orionst.bikegarage.presentation.screens.home.HomeScreen
 
 @Composable
 fun BikeGarageApp(
@@ -24,9 +24,18 @@ fun BikeGarageApp(
         startDestination = Screen.BikeList.route
     ) {
         composable(Screen.BikeList.route) { backStackEntry: NavBackStackEntry ->
-            BikeListScreen(
-                onAddBikeClick = { actions.addBikePress(backStackEntry) },
-                onBikeClick = { actions.onBikeClick(backStackEntry, it) }
+//            val bikeId = backStackEntry.arguments?.getInt(ScreenDeeplink.BIKE_ID)
+//            requireNotNull(bikeId)
+
+            HomeScreen(
+                onAddBike = { actions.addBikePress(backStackEntry) },
+                onAddComponent = { bike ->
+                    actions.addBikeComponentPress(
+                        backStackEntry,
+                        bike.uid
+                    )
+                },
+                onAddRide = {},
             )
         }
         composable(Screen.AddBike.route) { backStackEntry: NavBackStackEntry ->
@@ -35,32 +44,12 @@ fun BikeGarageApp(
             )
         }
         composable(
-            route = Screen.BikeDetails.route,
-            arguments = listOf(
-                navArgument(ScreenDeeplink.BIKE_ID) {
-                    type = NavType.IntType
-                }
-            )
-        ) { backStackEntry: NavBackStackEntry ->
-//            val bikeId = backStackEntry.arguments?.getInt(ScreenDeeplink.BIKE_ID)
-//
-//            requireNotNull(bikeId)
-
-            BikeDetailsScreen(
-                upPress = { actions.upPress(backStackEntry) },
-            )
-        }
-        composable(
             route = Screen.AddBikeComponent.route,
             arguments = listOf(
-                navArgument(ScreenDeeplink.BIKE_ID) {
-                    type = NavType.IntType
-                }
+                navArgument(ScreenDeeplink.BIKE_ID) { type = NavType.IntType }
             )
-        ) { backStackEntry ->
-//            AddBikeComponentScreen(
-//                upPress = { actions.upPress(backStackEntry) }
-//            )
+        ) {
+            AddEditComponentScreen()
         }
     }
 }
@@ -87,15 +76,9 @@ class MainActions(navController: NavHostController) {
         }
     }
 
-    val addBikeComponentPress: (from: NavBackStackEntry) -> Unit = { from ->
+    val addBikeComponentPress: (from: NavBackStackEntry, bikeId: Int) -> Unit = { from, bikeId ->
         if (from.lifecycleIsResumed()) {
-            navController.navigate(Screen.AddBikeComponent.route)
-        }
-    }
-
-    val onBikeClick: (from: NavBackStackEntry, bikeId: Int) -> Unit = { from, bikeId ->
-        if (from.lifecycleIsResumed()) {
-            navController.navigate(Screen.BikeDetails.createRoute(bikeId = bikeId))
+            navController.navigate(Screen.AddBikeComponent.createRoute(bikeId = bikeId))
         }
     }
 }

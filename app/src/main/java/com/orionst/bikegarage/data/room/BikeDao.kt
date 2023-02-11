@@ -4,6 +4,8 @@ import androidx.room.*
 import com.orionst.bikegarage.data.room.entity.BikeEntity
 import com.orionst.bikegarage.data.room.entity.BikeWithComponents
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.single
 
 @Dao
 interface BikeDao {
@@ -24,5 +26,11 @@ interface BikeDao {
     suspend fun update(vararg bikes: BikeEntity)
 
     @Delete
-    suspend fun delete(user: BikeEntity)
+    suspend fun delete(bike: BikeEntity)
+
+    @Transaction
+    suspend fun findAndDelete(id: Int) {
+        val entity = getBikeById(id)
+        delete(entity.first())
+    }
 }
