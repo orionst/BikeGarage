@@ -9,8 +9,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.orionst.bikegarage.presentation.screens.addbike.AddBikeScreen
 import com.orionst.bikegarage.presentation.screens.addcomponent.AddEditComponentScreen
+import com.orionst.bikegarage.presentation.screens.bike.addbike.AddBikeScreen
+import com.orionst.bikegarage.presentation.screens.bike.editbike.EditBikeScreen
 import com.orionst.bikegarage.presentation.screens.home.HomeScreen
 
 @Composable
@@ -29,20 +30,31 @@ fun BikeGarageApp(
 
             HomeScreen(
                 onAddBike = { actions.addBikePress(backStackEntry) },
+                onEditBike = { bike -> actions.editBikePress(backStackEntry, bike.uid) },
                 onAddComponent = { bike ->
-                    actions.addBikeComponentPress(
-                        backStackEntry,
-                        bike.uid
-                    )
+                    actions.addBikeComponentPress(backStackEntry, bike.uid)
                 },
                 onAddRide = {},
             )
         }
+
         composable(Screen.AddBike.route) { backStackEntry: NavBackStackEntry ->
             AddBikeScreen(
                 upPress = { actions.upPress(backStackEntry) }
             )
         }
+
+        composable(
+            route = Screen.EditBike.route,
+            arguments = listOf(
+                navArgument(ScreenDeeplink.BIKE_ID) { type = NavType.IntType }
+            )
+        ) { backStackEntry: NavBackStackEntry ->
+            EditBikeScreen(
+                upPress = { actions.upPress(backStackEntry) }
+            )
+        }
+
         composable(
             route = Screen.AddBikeComponent.route,
             arguments = listOf(
@@ -73,6 +85,12 @@ class MainActions(navController: NavHostController) {
         // In order to discard duplicated navigation events, we check the Lifecycle
         if (from.lifecycleIsResumed()) {
             navController.navigate(Screen.AddBike.route)
+        }
+    }
+
+    val editBikePress: (from: NavBackStackEntry, bikeId: Int) -> Unit = { from, bikeId ->
+        if (from.lifecycleIsResumed()) {
+            navController.navigate(Screen.EditBike.createRoute(bikeId = bikeId))
         }
     }
 

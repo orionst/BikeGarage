@@ -1,9 +1,8 @@
-package com.orionst.bikegarage.presentation.screens.addbike
+package com.orionst.bikegarage.presentation.screens.bike
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -11,19 +10,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.orionst.bikegarage.R
 import com.orionst.bikegarage.presentation.theme.BikeGarageTheme
+import com.orionst.bikegarage.presentation.ui.autocomplete.AutoCompleteOutlinedTextField
 
 @Composable
-fun AddBikeScreen(
+fun AddEditBikeCommonScreen(
+    uiState: AddEditBikeScreenState,
     upPress: () -> Unit,
-    viewModel: AddBikeViewModel = hiltViewModel()
+    saveBike: (String, String, String) -> Unit,
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-
     Column(
         modifier = Modifier.background(MaterialTheme.colors.background)
     ) {
@@ -35,19 +34,23 @@ fun AddBikeScreen(
                 }
             }
         )
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
         ) {
             when (uiState) {
-                AddBikeScreenState.Editing -> item {
-                    Fields { brand, model, description ->
-                        viewModel.addBike(brand, model, description)
-                    }
+                is AddEditBikeScreenState.Editing -> {
+                    Fields(
+                        state = uiState,
+                        addBikePress = { brand, model, description ->
+                            saveBike(brand, model, description)
+                        },
+                        onCancel = upPress,
+                    )
                 }
-                AddBikeScreenState.Saved -> upPress.invoke()
-                AddBikeScreenState.Saving -> item {
+                AddEditBikeScreenState.Saved -> upPress.invoke()
+                AddEditBikeScreenState.Processing -> {
                     Loading()
                 }
             }
@@ -56,20 +59,24 @@ fun AddBikeScreen(
 }
 
 @Composable
-private fun Fields(
+private fun ColumnScope.Fields(
+    state: AddEditBikeScreenState.Editing,
     addBikePress: (brand: String, model: String, description: String) -> Unit,
+    onCancel: () -> Unit,
 ) {
-    var brand by remember { mutableStateOf("") }
-    var model by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
+    val prefilledBike = state.bike
+    var brand by remember { mutableStateOf(prefilledBike?.brandName.orEmpty()) }
+    var model by remember { mutableStateOf(prefilledBike?.modelName.orEmpty()) }
+    var description by remember { mutableStateOf(prefilledBike?.description.orEmpty()) }
 
     val fieldModifier = Modifier
         .fillMaxWidth()
         .padding(vertical = 4.dp)
 
-    OutlinedTextField(
+    AutoCompleteOutlinedTextField(
         modifier = fieldModifier,
-        value = brand,
+        text = brand,
+        options = state.brandList,
         onValueChange = { brand = it.trimStart() },
         label = { Text(text = stringResource(R.string.brand_field_label)) },
         singleLine = true
@@ -88,18 +95,49 @@ private fun Fields(
         label = { Text(text = stringResource(R.string.description_field_label)) },
         maxLines = 3
     )
-    Spacer(modifier = Modifier.size(8.dp))
-    Box(
-        modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.CenterEnd
+
+    Spacer(modifier = Modifier.weight(1f))
+
+    BottomButtons(
+        addBikeEnabled = brand.isNotEmpty() && model.isNotEmpty(),
+        addBikePress = { addBikePress.invoke(brand, model, description) },
+        cancelPress = onCancel,
+    )
+}
+
+@Composable
+private fun BottomButtons(
+    addBikeEnabled: Boolean,
+    addBikePress: () -> Unit,
+    cancelPress: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(intrinsicSize = IntrinsicSize.Max)
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Button(
-            enabled = (brand.isNotEmpty() && model.isNotEmpty()),
-            onClick = {
-                addBikePress.invoke(brand, model, description)
-            }
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f),
+            onClick = cancelPress,
         ) {
-            Text(text = stringResource(id = R.string.add_bike_text))
+            Text(text = stringResource(id = R.string.cancel_button_text))
+        }
+
+        Button(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f),
+            enabled = addBikeEnabled,
+            onClick = addBikePress
+        ) {
+            Text(
+                text = stringResource(id = R.string.add_bike_text),
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
@@ -121,6 +159,12 @@ private fun Loading() {
 @Composable
 private fun FieldsPreview() {
     BikeGarageTheme {
-        Fields(addBikePress = { _, _, _ -> })
+        Column {
+            Fields(
+                state = AddEditBikeScreenState.Editing(bike = null),
+                addBikePress = { _, _, _ -> },
+                onCancel = {},
+            )
+        }
     }
 }

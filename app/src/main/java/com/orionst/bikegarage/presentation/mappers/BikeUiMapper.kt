@@ -11,3 +11,10 @@ fun Bike.toUiModel() = BikeUi(
     modelName = modelName,
     description = description
 )
+
+fun Bike.toDomainModel() = Bike(
+    uid = uid,
+    brandName = brandName,
+    modelName = modelName,
+    description = description
+)

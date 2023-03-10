@@ -2,7 +2,6 @@ package com.orionst.bikegarage.data.mappers
 
 import com.orionst.bikegarage.data.room.entity.BikeEntity
 import com.orionst.bikegarage.domain.entity.Bike
-import com.orionst.bikegarage.domain.entity.BikeToSave
 
 fun List<BikeEntity>.toBikeList(): List<Bike> = map { it.toBike() }
 
@@ -14,9 +13,8 @@ fun BikeEntity.toBike() = Bike(
     description = description
 )
 
-fun List<BikeToSave>.toBikeEntityList(): List<BikeEntity> = map { it.toBikeEntity() }
-
-fun BikeToSave.toBikeEntity() = BikeEntity(
+fun Bike.toBikeEntity() = BikeEntity(
+    uid = uid,
     brandName = brandName,
     modelName = modelName,
     creationDate = creationDate,

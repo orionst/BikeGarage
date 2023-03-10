@@ -1,11 +1,10 @@
-package com.orionst.bikegarage.data.room
+package com.orionst.bikegarage.data.room.daos
 
 import androidx.room.*
 import com.orionst.bikegarage.data.room.entity.BikeEntity
 import com.orionst.bikegarage.data.room.entity.BikeWithComponents
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.single
 
 @Dao
 interface BikeDao {
@@ -23,7 +22,7 @@ interface BikeDao {
     suspend fun insert(bike: BikeEntity)
 
     @Update
-    suspend fun update(vararg bikes: BikeEntity)
+    suspend fun update(vararg bikes: BikeEntity): Int
 
     @Delete
     suspend fun delete(bike: BikeEntity)

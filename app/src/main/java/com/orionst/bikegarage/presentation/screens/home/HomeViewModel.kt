@@ -55,10 +55,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onEditBikeClick(bike: BikeUi) {
-
-    }
-
     fun onDeleteBikeClick(bike: BikeUi) {
         viewModelScope.launch {
             bikeRepository.deleteBike(bike.uid)

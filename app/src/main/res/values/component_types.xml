@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="component_type_battery">Battery</string>
+    <string name="component_type_bearings">Bearings</string>
+    <string name="component_type_bolts">Bolts</string>
+    <string name="component_type_bottom_bracket">Bottom bracket</string>
+    <string name="component_type_brake">Brake</string>
+    <string name="component_type_brake_caliper">Brake caliper</string>
+    <string name="component_type_brake_lever">Brake lever</string>
+    <string name="component_type_brake_pads">Brake pads</string>
+    <string name="component_type_brake_rotor">Brake rotor</string>
+    <string name="component_type_cable">Cable</string>
+    <string name="component_type_cassette">Cassette</string>
+    <string name="component_type_chain">Chain</string>
+    <string name="component_type_chainguide">Chainguide</string>
+    <string name="component_type_chainring">Chainring</string>
+    <string name="component_type_cranks">Cranks</string>
+    <string name="component_type_fork">Fork</string>
+    <string name="component_type_frame">Frame</string>
+    <string name="component_type_front_derailleur">Front derailleur</string>
+    <string name="component_type_grips">Grips</string>
+    <string name="component_type_handlebar">Handlebar</string>
+    <string name="component_type_headset">Headset</string>
+    <string name="component_type_hub">Hub</string>
+    <string name="component_type_inner_tube">Inner tube</string>
+    <string name="component_type_other">Other</string>
+    <string name="component_type_pedals">Pedals</string>
+    <string name="component_type_rear_derailleur">Rear derailleur</string>
+    <string name="component_type_saddle">Saddle</string>
+    <string name="component_type_seat_post">Seat post</string>
+    <string name="component_type_shifter">Shifter</string>
+    <string name="component_type_shock">Shock</string>
+    <string name="component_type_sprocket">Sprocket</string>
+    <string name="component_type_stem">Stem</string>
+    <string name="component_type_seat_tire">Tire</string>
+    <string name="component_type_seat_wheel">Wheel</string>
+</resources>

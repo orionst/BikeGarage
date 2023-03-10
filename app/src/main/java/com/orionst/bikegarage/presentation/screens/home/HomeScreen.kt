@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     onAddBike: () -> Unit,
+    onEditBike: (BikeUi) -> Unit,
     onAddComponent: (BikeUi) -> Unit,
     onAddRide: (BikeUi) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
@@ -39,7 +40,7 @@ fun HomeScreen(
         uiState = uiState,
         onAddBike = onAddBike,
         onBikeItemClick = viewModel::onBikeListItemClick,
-        onEditBike = viewModel::onEditBikeClick,
+        onEditBike = onEditBike,
         onDeleteBike = viewModel::onDeleteBikeClick,
         onAddComponent = onAddComponent,
         onAddRide = onAddRide,

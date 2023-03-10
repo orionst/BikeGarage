@@ -2,7 +2,9 @@ package com.orionst.bikegarage.di
 
 import com.orionst.bikegarage.domain.BikeRepository
 import com.orionst.bikegarage.data.repository.BikeRepositoryImpl
+import com.orionst.bikegarage.data.repository.CollectionsRepositoryImpl
 import com.orionst.bikegarage.data.repository.ComponentsRepositoryImpl
+import com.orionst.bikegarage.domain.CollectionsRepository
 import com.orionst.bikegarage.domain.ComponentsRepository
 import dagger.Binds
 import dagger.Module
@@ -14,10 +16,11 @@ import dagger.hilt.android.components.ViewModelComponent
 interface RepositoryModule {
 
     @Binds
-    fun bindBikeRepo(bikeRepositoryImpl: BikeRepositoryImpl): BikeRepository
+    fun BikeRepositoryImpl.bindBikeRepo(): BikeRepository
 
     @Binds
-    fun bindComponentsRepo(
-        componentsRepositoryImpl: ComponentsRepositoryImpl
-    ): ComponentsRepository
+    fun ComponentsRepositoryImpl.bindComponentsRepo(): ComponentsRepository
+
+    @Binds
+    fun CollectionsRepositoryImpl.bindCollectionsRepo(): CollectionsRepository
 }

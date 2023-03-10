@@ -19,6 +19,14 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                compilerArgumentProviders(
+                        new RoomSchemaArgProvider(new File(projectDir, "schemas"))
+                )
+            }
+        }
     }
 
     buildTypes {
@@ -93,4 +101,20 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
 
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
+}
+
+class RoomSchemaArgProvider implements CommandLineArgumentProvider {
+
+    @InputDirectory
+    @PathSensitive(PathSensitivity.RELATIVE)
+    File schemaDir
+
+    RoomSchemaArgProvider(File schemaDir) {
+        this.schemaDir = schemaDir
+    }
+
+    @Override
+    Iterable<String> asArguments() {
+        return ["-Aroom.schemaLocation=${schemaDir.path}".toString()]
+    }
 }

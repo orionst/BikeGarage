@@ -1,6 +1,6 @@
 package com.orionst.bikegarage.data.repository
 
-import com.orionst.bikegarage.data.room.BikeDao
+import com.orionst.bikegarage.data.room.daos.BikeDao
 import com.orionst.bikegarage.data.room.entity.BikeWithComponents
 import com.orionst.bikegarage.domain.ComponentsRepository
 import kotlinx.coroutines.flow.Flow

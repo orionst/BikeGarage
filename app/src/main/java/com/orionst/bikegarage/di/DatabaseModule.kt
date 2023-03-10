@@ -2,8 +2,9 @@ package com.orionst.bikegarage.di
 
 import android.content.Context
 import androidx.room.Room
-import com.orionst.bikegarage.data.room.BikeDao
 import com.orionst.bikegarage.data.room.BikeGarageDatabase
+import com.orionst.bikegarage.data.room.daos.BikeDao
+import com.orionst.bikegarage.data.room.daos.CollectionsDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,14 +22,22 @@ object DatabaseModule {
     @Singleton
     fun provideDatabase(@ApplicationContext appContext: Context): BikeGarageDatabase {
         return Room.databaseBuilder(
-            appContext,
-            BikeGarageDatabase::class.java,
-            DATABASE_NAME
-        ).build()
+            context = appContext,
+            klass = BikeGarageDatabase::class.java,
+            name = DATABASE_NAME
+        )
+            .createFromAsset("database/bike_garage_database.db")
+//            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides
-    fun provideBikeDao(database: BikeGarageDatabase): BikeDao {
-        return database.bikeDao()
-    }
+    @Singleton
+    fun provideBikeDao(database: BikeGarageDatabase): BikeDao =
+        database.bikeDao()
+
+    @Provides
+    @Singleton
+    fun provideCollectionsDao(database: BikeGarageDatabase): CollectionsDao =
+        database.collectionsDao()
 }
